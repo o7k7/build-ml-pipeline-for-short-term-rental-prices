@@ -33,6 +33,9 @@ def go(args):
 
         logger.info(f"Easing skewness for minimum_nights")
         df['minimum_nights'] = np.log1p(df['minimum_nights']).skew()
+        # Drop rows in the dataset that are not in the proper geolocation.
+        idx = df['longitude'].between(-74.25, -73.50) & df['latitude'].between(40.5, 41.2)
+        df = df[idx].copy()
 
         # Create output
         outfile = args.output_artifact
